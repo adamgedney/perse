@@ -1,3 +1,9 @@
 <div class="sidebar">
-  
+  <ul class="sidebar__assets" *ngFor="let coin of coins">
+    <li (click)="onAssetClick(coin)">
+      <a routerLink="asset/{{coin.name}}">
+        <img src="{{coin.logo}}" alt="{{coin.name}}" />
+      </a>
+    </li>
+  </ul>
 </div>

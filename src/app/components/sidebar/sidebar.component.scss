@@ -6,4 +6,20 @@
   bottom: 0;
   left: 0;
   background: lighten(#2B2B2B,5%);
+
+  &__assets{
+    padding: 6px;
+    box-sizing: border-box;
+    li{
+      list-style-type: none;
+
+      &:hover{
+        opacity: 0.4;
+      }
+    }
+
+    img{
+      max-width: 45px;
+    }
+  }
 }
