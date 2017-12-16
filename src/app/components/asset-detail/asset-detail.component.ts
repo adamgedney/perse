@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from "@angular/router";
-const CoinMarketCap = require('node-coinmarketcap');
-const coinmarketcap = new CoinMarketCap();
+const coinmarketcap = require('coinmarketcap');
 
 
 @Component({
@@ -19,9 +18,10 @@ export class AssetDetailComponent implements OnInit {
     this.route.params.subscribe(params => {
       self.assetId = params.assetName;
 
-      coinmarketcap.get(self.assetId, coin => {
+      coinmarketcap.tickerByAsset(self.assetId)
+      .then(coin => {
         self.asset = coin;
-        console.log('COIN',coin)
+        console.log('COIN', coin)
       });
     });
   }

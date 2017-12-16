@@ -6,6 +6,8 @@
   bottom: 0;
   left: 0;
   background: lighten(#2B2B2B,5%);
+  overflow:scroll;
+  // padding-right: 17px;
 
   &__assets{
     padding: 6px;
