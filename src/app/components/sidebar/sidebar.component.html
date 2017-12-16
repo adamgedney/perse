@@ -1,8 +1,9 @@
 <div class="sidebar">
-  <ul class="sidebar__assets" *ngFor="let coin of coins">
+  <ul class="sidebar__assets" *ngFor="let coin of assetList">
     <li (click)="onAssetClick(coin)">
-      <a routerLink="asset/{{coin.name}}">
-        <img src="{{coin.logo}}" alt="{{coin.name}}" />
+      <a routerLink="/asset/{{coin.id}}" title="{{coin.price_usd}}">
+        <!-- <img src="{{coin.logo}}" alt="{{coin.id}}" /> -->
+        {{coin.symbol}}
       </a>
     </li>
   </ul>
