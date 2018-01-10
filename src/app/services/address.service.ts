@@ -18,33 +18,33 @@ import '../lib/bitcoinjs-lib.address';
 @Injectable()
 export class AddressService {
   private password;
-  private btcPrivateKey;
+  private privateKey;
   private btcAddress;
 
   constructor() { }
 
-  makeBTCAddress(password) {
-    this.password = password;
-    this.btcPrivateKey = this._makeBTCPrivateKey(this.password);
-    this.btcAddress = this._makeBTCAddressFromPK(this.btcPrivateKey);
+  makeBTCAddress() {
+    this.btcAddress = this._makeBTCAddressFromPK(this.privateKey);
 
     return new BehaviorSubject<any>({
       password: this.password,
       btc: {
-        privateKey: this.btcPrivateKey,
+        privateKey: this.privateKey,
         address: this.btcAddress
       }
     }).asObservable();
   }
 
-  _makeBTCPrivateKey(password) {
+  makePrivateKey(password) {
     const privateKeyHex = Crypto.SHA256(Crypto.util.hexToBytes(Crypto.SHA256(password)))
     const privateKeyBytes = Crypto.util.hexToBytes(privateKeyHex)
 
-    return {
+    this.privateKey = {
       privateKeyHex,
       privateKeyBytes
-    }
+    };
+
+    return this.privateKey;
   }
 
   _makeBTCAddressFromPK({ privateKeyBytes }) {
@@ -54,4 +54,7 @@ export class AddressService {
     return eckey.getBitcoinAddress().toString()
   }
 
+  getAddress(type = 'btc') {
+    return this[`${type}Address`];
+  }
 }
