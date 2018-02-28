@@ -13,7 +13,7 @@ export default {
 
 <style lang="scss">
 @import url("https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css");
-
+@import url("https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css");
 #app {
   @import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro");
   background: $bg;
@@ -22,7 +22,12 @@ export default {
   font-family: "Source Sans Pro", sans-serif;
 }
 
-.h2 {
+h1,
+h2,
+h3,
+h4,
+h5,
+p {
   color: white;
 }
 
@@ -32,6 +37,7 @@ export default {
   position: absolute;
   top: 0;
   left: 0;
+  padding: 6px;
 
   &:after {
     content: "\f060";

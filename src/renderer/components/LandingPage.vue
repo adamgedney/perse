@@ -2,14 +2,14 @@
 <div class="landing">
   <div class="backButton" v-on:click="togglePkForm"></div>
   <form class="pk__generate" v-if="showPKForm">
-    <h2>Generate private keys from passphrase</h2>
-    <input type="text" placeholder="passphrase" :value="keys.pk.passphrase" @input="updatePassphraseInStore"/>
-    <input class="button" type="submit" value="Generate Private Keys" v-on:click="generateKeys"/>
+    <h3>Generate private keys from passphrase</h3>
+    <el-input type="text" placeholder="passphrase" :value="keys.pk.passphrase" @input="updatePassphraseInStore"></el-input>
+    <el-button type="success" plain v-on:click="generateKeys">Generate Private Keys</el-button>
   </form>
 
   <div class="pk__show" v-if="!showPKForm">
     <div class="pk__keyWrapper">
-      <h2>This is your private key and your passphrase. If you lose these your money will be lost forever. Write these down!</h2>
+      <h3>This is your private key and your passphrase. If you lose these your money will be lost forever. Write these down!</h3>
       <p>This is your passphrase:</p>
       <p><span>{{ keys.pk.passphrase }}</span></p>
       <hr>
@@ -30,8 +30,11 @@ import { mapGetters, mapActions } from "vuex";
 import AddressService from "../../service/address";
 const addressService = new AddressService();
 
+// import { Input } from "element-ui";
+
 export default {
   name: "landing-page",
+  // components: [Input],
   computed: mapGetters({
     keys: "keys",
     showPKForm: "showPKForm"
@@ -78,11 +81,21 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+
+  button {
+    width: 100%;
+    margin-top: 9px;
+  }
+
+  h3 {
+    text-align: center;
+  }
 }
 
 .pk {
   &__generate {
-    max-width: 80%;
+    // max-width: 90%;
+    width: 66%;
     margin: 0 auto;
 
     input {
