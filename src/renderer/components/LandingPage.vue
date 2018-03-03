@@ -1,6 +1,7 @@
 <template>
 <div class="landing">
-  <div class="backButton" v-on:click="togglePkForm"></div>
+  <div class="backButton" v-if="!showPKForm" v-on:click="togglePkForm"></div>
+  
   <form class="pk__generate" v-if="showPKForm">
     <h3>Generate private keys from passphrase</h3>
     <el-input type="text" placeholder="passphrase" :value="keys.pk.passphrase" @input="updatePassphraseInStore"></el-input>
@@ -8,18 +9,25 @@
   </form>
 
   <div class="pk__show" v-if="!showPKForm">
-    <div class="pk__keyWrapper">
+    <div class="pk__wrapper">
       <h3>This is your private key and your passphrase. If you lose these your money will be lost forever. Write these down!</h3>
       <p>This is your passphrase:</p>
-      <p><span>{{ keys.pk.passphrase }}</span></p>
+      <p>
+        <span>{{ keys.pk.passphrase }}</span>
+        <span title="Copy to clipboard" class="copyButton" v-on:click="copyToClipboard(keys.pk.passphrase)"></span>
+        </p>
       <hr>
 
       <p>This is your private key:</p>
-      <p><span>{{ keys.pk.privateKeyHex }}</span></p>
+      <p>
+        <span>{{ keys.pk.privateKeyHex }}</span>
+        <span title="Copy to clipboard" class="copyButton" v-on:click="copyToClipboard(keys.pk.privateKeyHex)"></span>
+      </p>
     </div>
-    <div class="pk__keyWrapper">
-    <p>This is your Bitcoin public adress. Use it to send Bitcoin to your wallet</p>
-    <p><span>{{ keys.btc }}</span></p>
+    <div class="pk__wrapper">
+    <el-checkbox v-model="copyCheck">Yes, I safely copied &amp; stored my 12 word Mneumonic and my private keys</el-checkbox>
+    <el-button type="success" plain v-if="copyCheck">Take me to my wallets</el-button>
+
     </div>
   </div>
 </div>
@@ -27,6 +35,7 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
+import copy from "copy-to-clipboard";
 import AddressService from "../../service/address";
 const addressService = new AddressService();
 
@@ -35,6 +44,11 @@ const addressService = new AddressService();
 export default {
   name: "landing-page",
   // components: [Input],
+  data() {
+    return {
+      copyCheck: false
+    };
+  },
   computed: mapGetters({
     keys: "keys",
     showPKForm: "showPKForm"
@@ -46,6 +60,13 @@ export default {
       // methods: {
       open(link) {
         this.$electron.shell.openExternal(link);
+      },
+      copyToClipboard(text) {
+        console.log(text);
+        copy(text, {
+          debug: true,
+          message: "Press #{key} to copy"
+        });
       },
       generateKeys() {
         console.log("KEYS", this.keys.pk.passphrase);
@@ -107,11 +128,15 @@ export default {
     }
   }
 
-  &__keyWrapper {
+  &__wrapper {
     background: lighten(#2b2b2b, 5%);
     padding: 18px;
     border-radius: 6px;
     margin: 18px 0;
+
+    &:last-of-type {
+      height: 119px;
+    }
   }
 
   &__show {

@@ -61,6 +61,7 @@
     "bulma": "^0.6.2",
     "coinkey": "^2.0.0",
     "coinmarketcap": "^0.2.0",
+    "copy-to-clipboard": "^3.0.8",
     "element-ui": "^2.2.0",
     "rxjs": "^5.5.6",
     "vue": "^2.3.3",

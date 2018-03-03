@@ -51,4 +51,23 @@ p {
     opacity: 0.7;
   }
 }
+
+.copyButton {
+  width: 48px;
+  height: 48px;
+  padding: 6px;
+
+  &:after {
+    content: "\f0c5";
+    font-family: FontAwesome;
+    font-size: 24px;
+    color: white;
+    opacity: 0.7;
+  }
+
+  &:hover {
+    cursor: pointer;
+    opacity: 1;
+  }
+}
 </style>
