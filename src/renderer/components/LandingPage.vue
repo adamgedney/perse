@@ -26,7 +26,9 @@
     </div>
     <div class="pk__wrapper">
     <el-checkbox v-model="copyCheck">Yes, I safely copied &amp; stored my 12 word Mneumonic and my private keys</el-checkbox>
-    <el-button type="success" plain v-if="copyCheck">Take me to my wallets</el-button>
+    <el-button type="success" plain v-if="copyCheck">
+      <router-link :to="{ name: 'assets'}">Take me to my wallets</router-link>
+    </el-button>
 
     </div>
   </div>
@@ -39,11 +41,8 @@ import copy from "copy-to-clipboard";
 import AddressService from "../../service/address";
 const addressService = new AddressService();
 
-// import { Input } from "element-ui";
-
 export default {
   name: "landing-page",
-  // components: [Input],
   data() {
     return {
       copyCheck: false
@@ -62,21 +61,18 @@ export default {
         this.$electron.shell.openExternal(link);
       },
       copyToClipboard(text) {
-        console.log(text);
         copy(text, {
           debug: true,
           message: "Press #{key} to copy"
         });
       },
       generateKeys() {
-        console.log("KEYS", this.keys.pk.passphrase);
         const genKeys = {
           pk: addressService.makePrivateKeyFromPhrase(this.keys.pk.passphrase),
           btc: addressService.makePublicAddress()
         };
 
         this.updateKeys(genKeys);
-        // this.$store.dispatch("UPDATE_KEYS", keys);
 
         console.log("BTC Public Address: ", genKeys.btc);
         console.log("Private Key:  ", genKeys.pk);
@@ -86,7 +82,6 @@ export default {
         this.togglePkForm();
       },
       updatePassphraseInStore(e) {
-        console.log("PHRASE", e);
         this.updatePassphrase(e.target.value);
       }
     }
