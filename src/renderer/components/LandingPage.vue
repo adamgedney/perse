@@ -76,7 +76,7 @@ export default {
 
         console.log("BTC Public Address: ", genKeys.btc);
         console.log("Private Key:  ", genKeys.pk);
-        console.log("Store:  ", this.keys.btc);
+        // console.log("Store:  ", this.keys.btc);
 
         // Hide the passphrase form and show the results
         this.togglePkForm();

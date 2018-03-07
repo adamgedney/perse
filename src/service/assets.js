@@ -4,7 +4,8 @@ const coinmarketcap = require("coinmarketcap");
 
 export default class Assets {
   constructor() {
-    this.supportedAssets = ['bitcoin', 'ethereum', 'ripple', 'litecoin', 'tron'];
+    // this.supportedAssets = ['bitcoin', 'ethereum', 'ripple', 'litecoin', 'tron'];
+    this.supportedAssets = ['bitcoin'];
   }
 
   getAssetsList = () => Observable.fromPromise(
@@ -13,4 +14,6 @@ export default class Assets {
         .map(asset => coinmarketcap.tickerByAsset(asset)
         )
     ))
+
+  getSupportedAssets = () => this.supportedAssets
 }

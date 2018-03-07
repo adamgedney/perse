@@ -1,26 +1,58 @@
 import PrivateKeyService from './privateKey';
-import BitcoinService from './bitcoin';
+import AssetService from './assets';
+import BitcoinService from './assets/bitcoin';
+import EthereumService from './assets/ethereum';
 
 export default class Address {
+  instance;
+
+  /** Private key set w/ hex, wif, bytes, & passphrase */
   privateKey;
 
+  /** public keys & addresses for the supported assets */
+  assets = {};
+
+  supportedAssets;
+  privateKeyService;
+  bitcoinService;
+  ethereumService;
+
   constructor() {
-    this.PrivateKeyService = new PrivateKeyService();
-    this.BitcoinService = new BitcoinService();
+    this.supportedAssets = new AssetService().getSupportedAssets();
+    this.privateKeyService = new PrivateKeyService();
+    this.bitcoinService = new BitcoinService();
+    this.ethereumService = new EthereumService();
+
+    // Singleton
+    if (!this.instance) { this.instance = this; }
+    console.log("address service this.instance", this.instance);
+    return this.instance;
   }
 
+  getInstance = () => this.instance
+
   makePrivateKeyFromPhrase(passphrase) {
-    this.privateKey = this.PrivateKeyService.makePrivateKey(passphrase);
+    this.privateKey = this.privateKeyService.makePrivateKey(passphrase);
     return this.privateKey;
   }
 
-  makePublicAddress(asset = "btc") {
-    switch (asset) {
-      case 'btc':
-      default:
-        return this.BitcoinService.makeAddress(this.privateKey.privateKeyHex);
-    }
+  makePublicAddress(assetSymbol = "bitcoin") {
+    // if (assetSymbol) {
+    this.assets[assetSymbol] = this[`${assetSymbol}Service`]
+      ? this[`${assetSymbol}Service`].makeKeys(this.privateKey.hex)
+      : false;
+
+    return this.assets[assetSymbol];
+    // } else {
+    //   return this.assets = this.supportedAssets.reduce((curr, acc) => {
+    //     console.log('SA', curr, acc);
+    //     return this[`${assetSymbol}Service`]
+    //       ? acc[assetSymbol] = this[`${assetSymbol}Service`].makeKeys(this.privateKey.privateKeyHex)
+    //       : acc;
+    //   }, {});
+    // }
   }
 
   getPrivateKey = () => this.privateKey
+  getInstance = () => this.instance
 }

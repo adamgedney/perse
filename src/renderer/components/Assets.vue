@@ -29,10 +29,12 @@ export default {
   created: function() {
     const self = this;
 
-    walletService.getWalletAssets().subscribe(assets => {
-      self.assets = assets;
-      console.log("Wallet Assets", assets);
-    });
+    walletService
+      .getWalletAssets(self.$store.getters.keys)
+      .subscribe(assets => {
+        self.assets = assets;
+        console.log("Wallet Assets", assets);
+      });
   }
 };
 </script>
