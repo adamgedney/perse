@@ -25,7 +25,6 @@ export default class Address {
 
     // Singleton
     if (!this.instance) { this.instance = this; }
-    console.log("address service this.instance", this.instance);
     return this.instance;
   }
 
@@ -54,5 +53,4 @@ export default class Address {
   }
 
   getPrivateKey = () => this.privateKey
-  getInstance = () => this.instance
 }

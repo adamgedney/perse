@@ -20,8 +20,8 @@
 
       <p>This is your private key:</p>
       <p>
-        <span>{{ keys.pk.privateKeyHex }}</span>
-        <span title="Copy to clipboard" class="copyButton" v-on:click="copyToClipboard(keys.pk.privateKeyHex)"></span>
+        <span>{{ keys.pk.hex }}</span>
+        <span title="Copy to clipboard" class="copyButton" v-on:click="copyToClipboard(keys.pk.hex)"></span>
       </p>
     </div>
     <div class="pk__wrapper">

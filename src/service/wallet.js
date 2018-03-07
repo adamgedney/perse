@@ -1,5 +1,7 @@
 import { Observable } from "rxjs";
 import Promise from 'bluebird';
+import { convert } from '../utils';
+
 import AssetsService from "./assets";
 const assetsService = new AssetsService();
 import BitcoinService from "./assets/bitcoin";
@@ -17,37 +19,19 @@ export default class Wallet {
   }
 
   getWalletAssets = (keys) => {
+    return bitcoinService.getAddressBalance(keys)
+      .withLatestFrom(assetsService.getAssetsList(), (addressBalanceData, assetList) => {
+        return assetList.map(asset => {
 
-    // @todo: merge the assets list with a list of user balances from the blockchain.
-    // start with eth.
-    // bitcoinService.getAddressBalance(keys)
-    //   .subscribe(balance => {
-    //     console.log("BALANCE ", balance);
-    //   }); 
-    // assetsService.getAssetsList()
-    //   .flatMap(asset => {
-    //     //asset.id
-    //     // return bitcoinService.getAddressBalance(keys);
-    //   })
-    //   .subscribe(val => {
-    //     val.subscribe(v => {
-    //       console.log('VAL2 ', v);
-    //     })
-    //   })
+          // @todo make this dynamic once we have another asset balance stream
+          if (asset.id === 'bitcoin') {
+            addressBalanceData['current_price_usd'] = convert.toCurrentUSDFromAssetBalance(addressBalanceData.final_balance_btc, asset);
+            asset['addressData'] = addressBalanceData;
+          }
 
-    bitcoinService.getAddressBalance(keys)
-      .subscribe(res => {
-        console.log("Balances", res, keys);
+          return asset;
+        });
       });
-
-
-    // .subscribe(assets => {
-    //   self.assets = assets;
-    // })
-
-    // console.log(this.assets);
-    return assetsService.getAssetsList();
-    //bitcoinService.getAddressBalance(keys);
   }
 
   // getUserBalances = () => Observable.fromPromise(

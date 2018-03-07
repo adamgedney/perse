@@ -1,6 +1,7 @@
 import CoinKey from 'coinkey';
 import { Observable } from "rxjs";
 import blockexplorer from 'blockchain.info/blockexplorer';
+import { convert } from '../../utils';
 
 export default class Bitcoin {
   address;
@@ -15,9 +16,18 @@ export default class Bitcoin {
   getAddress = () => this.address
 
   getAddressBalance = (keys) => {
-    //.final_balance / 100000000
     return Observable.fromPromise(
       blockexplorer.getBalance(keys.btc)
+        .then(address => {
+          const key = Object.keys(address)[0];
+          const data = { ...address[key] };
+
+          return Promise.resolve({
+            address: key,
+            ...data,
+            final_balance_btc: convert.satoshiToBtc(data.final_balance)
+          });
+        })
     );
   }
 }
