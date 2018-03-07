@@ -21,6 +21,14 @@
         </p>
       </div>
     </div>
+    <div class="asset__send">
+      <form class="asset__form">
+        <h3>Send BTC</h3>
+        <el-input type="number" placeholder="Amount to send (in btc)" v-model="sendAmount"></el-input>
+        <el-input type="text" placeholder="BTC send to address" v-model="recipientAddress"></el-input>
+        <el-button type="success" plain v-on:click="sendBitcoin">Send Bitcoin</el-button>
+      </form>
+    </div>
   </div>
 </div>
 </template>
@@ -34,7 +42,9 @@ export default {
   data: function() {
     return {
       assetId: this.$route.params.id,
-      asset: this.$store.getters.assetById(this.$route.params.id)
+      asset: this.$store.getters.assetById(this.$route.params.id),
+      recipientAddress: "",
+      sendAmount: 0
     };
   },
   methods: {
@@ -45,6 +55,9 @@ export default {
       });
 
       alert("Copied!");
+    },
+    sendBitcoin() {
+      alert(`Send ${this.sendAmount} to ${this.recipientAddress}`);
     }
   },
   created: function() {
