@@ -4,11 +4,13 @@
 
     <ul class="assetsList">
       <li v-for="asset in assets">
-        <img :src="`static/assetLogos/${asset.symbol.toLowerCase()}.png`" :alt="asset.symbol" />
-        <div class="assetsList__values">
-          <p>{{asset.addressData.current_price_usd}}</p>
-          <p>{{asset.addressData.final_balance_btc}}</p>
-        </div>
+        <router-link :to="{ name: 'asset', params: { id: asset.id }}">
+          <img :src="`static/assetLogos/${asset.symbol.toLowerCase()}.png`" :alt="asset.symbol" />
+          <div class="assetsList__values">
+            <p>{{asset.addressData.current_price_usd}}</p>
+            <p>{{asset.addressData.final_balance_btc}}</p>
+          </div>
+        </router-link>
       </li> 
     </ul>
 </div>
@@ -17,19 +19,24 @@
 <script>
 import WalletService from "../../service/wallet";
 const walletService = new WalletService();
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "assets",
   data() {
     return {
-      assets: []
+      // assets: []
     };
   },
-  methods: {
+  computed: mapGetters({
+    assets: "assets",
+    assetById: "assetById"
+  }),
+  methods: Object.assign({}, mapActions(["updateAssets"]), {
     routeToHome() {
       this.$router.push("landing-page");
     }
-  },
+  }),
   created: function() {
     const self = this;
 
@@ -37,7 +44,9 @@ export default {
     walletService
       .getWalletAssets(self.$store.getters.keys)
       .subscribe(assets => {
-        self.assets = assets;
+        // self.assets = assets;
+        this.updateAssets(assets);
+
         console.log("Wallet Assets", assets);
       });
   }
@@ -55,10 +64,14 @@ export default {
   li {
     padding: 18px;
     width: 150px;
-    background: darken(#333333, 2%);
+    background: $bg-alt;
     border-radius: 3px;
     text-align: center;
     cursor: pointer;
+
+    a {
+      text-decoration: none;
+    }
 
     p {
       color: $text-secondary;

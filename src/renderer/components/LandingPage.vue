@@ -65,6 +65,7 @@ export default {
           debug: true,
           message: "Press #{key} to copy"
         });
+        alert("Copied!");
       },
       generateKeys() {
         const genKeys = {
