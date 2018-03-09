@@ -2,6 +2,7 @@ import PrivateKeyService from './privateKey';
 import AssetService from './assets';
 import BitcoinService from './assets/bitcoin';
 import EthereumService from './assets/ethereum';
+import walletAddressValidator from 'wallet-address-validator';
 
 export default class Address {
   instance;
@@ -53,4 +54,11 @@ export default class Address {
   }
 
   getPrivateKey = () => this.privateKey
+
+  isValidAddress = (address, assetSymbol) => walletAddressValidator.validate(address, assetSymbol)
+
+  //@todo move to another service. Tx service?
+  sendTx = (wif,fromAddress, toAddress, amount, assetId) => 
+    this[`${assetId}Service`].sendTx(wif, fromAddress, toAddress, amount)
+
 }

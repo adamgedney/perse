@@ -23,10 +23,10 @@
     </div>
     <div class="asset__send">
       <form class="asset__form">
-        <h3>Send BTC</h3>
+        <h3>Send {{asset.symbol}}</h3>
         <el-input type="number" placeholder="Amount to send (in btc)" v-model="sendAmount"></el-input>
         <el-input type="text" placeholder="BTC send to address" v-model="recipientAddress"></el-input>
-        <el-button type="success" plain v-on:click="sendBitcoin">Send Bitcoin</el-button>
+        <el-button type="success" plain v-on:click="sendAsset">Send {{asset.name}}</el-button>
       </form>
     </div>
   </div>
@@ -36,6 +36,8 @@
 <script>
 import { mapActions } from "vuex";
 import copy from "copy-to-clipboard";
+import AddressService from "../../service/address";
+const addressService = new AddressService();
 
 export default {
   name: "asset",
@@ -43,8 +45,8 @@ export default {
     return {
       assetId: this.$route.params.id,
       asset: this.$store.getters.assetById(this.$route.params.id),
-      recipientAddress: "",
-      sendAmount: 0
+      recipientAddress: "12tzR61QgEF7Cok2wSzMS5nySTx2dePE9k",//exodus wallet
+      sendAmount: 0.0002
     };
   },
   methods: {
@@ -56,17 +58,28 @@ export default {
 
       alert("Copied!");
     },
-    sendBitcoin() {
-      alert(`Send ${this.sendAmount} to ${this.recipientAddress}`);
+    sendAsset() {
+      if (!addressService.isValidAddress(this.recipientAddress, this.asset.symbol)) {
+        alert(`${this.asset.symbol} address is invalid. Please double check your send to address.`);
+      } else {
+        // alert(`Send ${this.sendAmount}${this.asset.symbol.toLowerCase()} to ${this.recipientAddress}?`);
+
+        addressService.sendTx(
+          this.$store.getters.keys.pk.wif,
+          this.asset.addressData.address,
+          this.recipientAddress,
+          this.sendAmount, 
+          this.asset.id
+        )
+        .subscribe(res => { 
+          console.log('SEND TX RES', res);
+        });
+
+      }
     }
   },
   created: function() {
-    console.log(
-      "ROUTE:",
-      this.$route.params.id,
-      this.$store.getters.assetById(this.assetId),
-      this.asset
-    );
+    
   }
 };
 </script>
@@ -78,7 +91,7 @@ export default {
   &__header {
     text-align: center;
     border-bottom: 1px solid $border;
-    padding-bottom: 36px;
+    padding-bottom: 18px;
 
     &Row {
       &:first-of-type {
@@ -100,7 +113,7 @@ export default {
         display: inline-block;
         padding: 9px 36px 18px 36px;
         width: 66%;
-        margin-top: 36px;
+        margin-top: 18px;
 
         h3,
         h4,
@@ -146,6 +159,19 @@ export default {
       color: $text-secondary;
       // margin-bottom: 0;
     }
+  }
+
+  &__send {
+    max-width: 66%;
+    margin: 36px auto 0;
+
+    .el-button {
+      width: 100%;
+    }
+  }
+
+  input {
+    margin-bottom: 9px;
   }
 }
 </style>

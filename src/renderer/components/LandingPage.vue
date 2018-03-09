@@ -26,9 +26,11 @@
     </div>
     <div class="pk__wrapper">
     <el-checkbox v-model="copyCheck">Yes, I safely copied &amp; stored my 12 word Mneumonic and my private keys</el-checkbox>
-    <el-button type="success" plain v-if="copyCheck">
-      <router-link :to="{ name: 'assets'}">Take me to my wallets</router-link>
-    </el-button>
+    <router-link :to="{ name: 'assets'}">
+      <el-button type="success" plain v-if="copyCheck">
+        Take me to my wallets
+      </el-button>
+     </router-link>
 
     </div>
   </div>
@@ -56,10 +58,6 @@ export default {
     {},
     mapActions(["updateKeys", "togglePkForm", "updatePassphrase"]),
     {
-      // methods: {
-      open(link) {
-        this.$electron.shell.openExternal(link);
-      },
       copyToClipboard(text) {
         copy(text, {
           debug: true,
@@ -87,7 +85,9 @@ export default {
       }
     }
   ),
-  created: function() {}
+  created: function() {
+
+  }
 };
 </script>
 
@@ -97,7 +97,7 @@ export default {
   height: 100%;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: center; 
 
   button {
     width: 100%;
@@ -113,7 +113,7 @@ export default {
   &__generate {
     // max-width: 90%;
     width: 66%;
-    margin: 0 auto;
+    margin: 0 auto; 
 
     input {
       display: block;

@@ -38,13 +38,10 @@ export default {
     }
   }),
   created: function() {
-    const self = this;
-
     // Get the generated pub/priv keys from the store to do a wallet lookup for the addresses
     walletService
-      .getWalletAssets(self.$store.getters.keys)
+      .getWalletAssets(this.$store.getters.keys)
       .subscribe(assets => {
-        // self.assets = assets;
         this.updateAssets(assets);
 
         console.log("Wallet Assets", assets);

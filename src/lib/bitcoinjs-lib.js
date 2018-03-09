@@ -17,4 +17,4 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 // );
 var Bitcoin = {};
 window.Bitcoin = Bitcoin;
-console.log(window)
+// console.log(window)

@@ -14,9 +14,14 @@ export default {
 <style lang="scss">
 @import url("https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css");
 @import url("https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css");
+
+html,body{
+    background: $bg;
+}
+
 #app {
   @import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro");
-  background: $bg;
+  overflow-y: auto;
   height: 100vh;
   width: 100vw;
   font-family: "Source Sans Pro", sans-serif;
@@ -69,5 +74,11 @@ p {
     cursor: pointer;
     opacity: 1;
   }
+}
+
+.el-input__inner {
+  background: $bg-secondary;
+  border-color: $border;
+  color: $text-secondary;
 }
 </style>
