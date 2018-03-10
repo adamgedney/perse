@@ -58,7 +58,8 @@ export default class Address {
   isValidAddress = (address, assetSymbol) => walletAddressValidator.validate(address, assetSymbol)
 
   //@todo move to another service. Tx service?
-  sendTx = (wif,fromAddress, toAddress, amount, assetId) => 
-    this[`${assetId}Service`].sendTx(wif, fromAddress, toAddress, amount)
+  sendTx = (wif,addressData, toAddress, amount, assetId) => 
+    this[`${assetId}Service`]
+      .sendTx(wif, addressData, toAddress, amount)
 
 }

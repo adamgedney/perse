@@ -18,6 +18,11 @@ export default class Assets {
           )
       ))
 
+  getAssetById = (assetId) => Observable
+    .fromPromise(
+      coinmarketcap.tickerByAsset(assetId)
+    )
+
   // Get new data every n seconds and convert to stream
   // getAssetsList = () =>  {
   //   const self = this;

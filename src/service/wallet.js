@@ -34,6 +34,22 @@ export default class Wallet {
       });
   }
 
+  getWalletAssetById = (keys, assetId) => {
+    return bitcoinService.getAddressBalance(keys)
+      .withLatestFrom(assetsService.getAssetById(assetId), (addressBalanceData, asset) => {
+  
+          // @todo make this dynamic once we have another asset balance stream
+          if (asset.id === 'bitcoin') {
+            addressBalanceData['current_price_usd'] = convert.toCurrentUSDFromAssetBalance(addressBalanceData.final_balance_btc, asset);
+            asset['addressData'] = addressBalanceData;
+          }
+
+          return asset;
+      });
+  }
+
+  
+
   // getUserBalances = () => Observable.fromPromise(
   //   // Promise.all(
   //   //   this.supportedAssets

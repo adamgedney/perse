@@ -27,7 +27,7 @@
     <div class="pk__wrapper">
     <el-checkbox v-model="copyCheck">Yes, I safely copied &amp; stored my 12 word Mneumonic and my private keys</el-checkbox>
     <router-link :to="{ name: 'assets'}">
-      <el-button type="success" plain v-if="copyCheck">
+      <el-button type="success" plain v-if="copyCheck" v-on:click="this.togglePkForm">
         Take me to my wallets
       </el-button>
      </router-link>
@@ -125,7 +125,7 @@ export default {
   }
 
   &__wrapper {
-    background: lighten(#2b2b2b, 5%);
+    background: rgba($bg-alt, 0.8);
     padding: 18px;
     border-radius: 6px;
     margin: 18px 0;

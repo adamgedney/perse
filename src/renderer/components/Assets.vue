@@ -1,6 +1,8 @@
 <template>
 <div>
-    <div class="backButton" v-on:click="routeToHome"></div>
+  <router-link :to="{ name: 'landing-page'}">
+    <div class="backButton"></div>
+  </router-link>
 
     <ul class="assetsList">
       <li v-for="asset in assets">
@@ -33,9 +35,9 @@ export default {
     assetById: "assetById"
   }),
   methods: Object.assign({}, mapActions(["updateAssets"]), {
-    routeToHome() {
-      this.$router.push("landing-page");
-    }
+    // routeToHome() {
+    //   this.$router.push("landing-page");
+    // }
   }),
   created: function() {
     // Get the generated pub/priv keys from the store to do a wallet lookup for the addresses
@@ -61,7 +63,7 @@ export default {
   li {
     padding: 18px;
     width: 150px;
-    background: $bg-alt;
+    background: rgba($bg,0.7);
     border-radius: 3px;
     text-align: center;
     cursor: pointer;
@@ -71,7 +73,7 @@ export default {
     }
 
     p {
-      color: $text-secondary;
+      color: $text-tertiary;
       margin: 18px 0 0;
     }
 

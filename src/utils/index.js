@@ -2,7 +2,7 @@
 export const convert = {
   satoshiToBtc : (satoshi) => satoshi / 100000000,
 
-  btcToSatoshi : (btc) => btc * 100000000,
+  btcToSatoshi : (btc) => Math.ceil(btc * 100000000),
 
   toDollarDecimals(dollarVal) {
     var formatter = new Intl.NumberFormat('en-US', {

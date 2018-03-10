@@ -1,11 +1,12 @@
-$bg: #333;
-$bg-secondary: lighten($bg, 5%);
+$bg: #000;//#333
+$bg-secondary: rgba($bg, 0.85);
 
-$bg-alt: darken($bg, 2%);
+$bg-alt: lighten($bg, 7%);
 
 $sidebar-width: 57px;
 
 $text-primary: lighten($bg, 16.5%);
 $text-secondary: lighten($bg, 49.5%);
+$text-tertiary: #fff;
 
 $border: $bg-alt;

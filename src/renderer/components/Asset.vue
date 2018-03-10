@@ -7,9 +7,10 @@
         <div>
           <img :src="`static/assetLogos/${asset.symbol.toLowerCase()}.png`" :alt="asset.symbol" />
           <h1>{{asset.name}}</h1>
-          <p>{{asset.addressData.final_balance_btc}} btc</p>
+          <p>${{asset.price_usd}}</p>
         </div>
         <div>
+          <p>{{asset.addressData.final_balance_btc}} btc</p>
           <h2>{{asset.addressData.current_price_usd}}</h2>
         </div>
       </div>
@@ -34,10 +35,12 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 import copy from "copy-to-clipboard";
 import AddressService from "../../service/address";
 const addressService = new AddressService();
+import WalletService from "../../service/wallet";
+const walletService = new WalletService();
 
 export default {
   name: "asset",
@@ -46,10 +49,10 @@ export default {
       assetId: this.$route.params.id,
       asset: this.$store.getters.assetById(this.$route.params.id),
       recipientAddress: "12tzR61QgEF7Cok2wSzMS5nySTx2dePE9k",//exodus wallet
-      sendAmount: 0.0002
+      sendAmount: 0.0013
     };
   },
-  methods: {
+  methods: Object.assign({},mapActions(["updateAsset"]),{
     copyToClipboard(text) {
       copy(text, {
         debug: true,
@@ -66,20 +69,28 @@ export default {
 
         addressService.sendTx(
           this.$store.getters.keys.pk.wif,
-          this.asset.addressData.address,
+          this.asset.addressData,
           this.recipientAddress,
           this.sendAmount, 
           this.asset.id
         )
-        .subscribe(res => { 
-          console.log('SEND TX RES', res);
-        });
-
+        .subscribe(
+          res => { 
+            console.log('SEND TX RES', res);
+          }
+        );
       }
     }
-  },
+  }),
   created: function() {
-    
+    // Get the generated pub/priv keys from the store to do a wallet lookup for the addresses
+    walletService
+      .getWalletAssetById(this.$store.getters.keys, this.$route.params.id)
+      .subscribe(asset => {
+        this.updateAsset(asset);
+
+        console.log("Wallet Asset", asset);
+      });
   }
 };
 </script>

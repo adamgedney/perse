@@ -5,12 +5,18 @@ const state = {
 const mutations = {
   UPDATE_ASSETS(state, assets) {
     state.assets = assets;
+  },
+  UPDATE_ASSET(state, asset) {
+    state.assets = state.assets.map(a => a.id === asset.id ? asset : a);
   }
 }
 
 const actions = {
   updateAssets({ commit }, assets) {
     commit('UPDATE_ASSETS', assets)
+  },
+  updateAsset({ commit }, asset) {
+    commit('UPDATE_ASSET', asset)
   }
 }
 

@@ -16,7 +16,9 @@ export default {
 @import url("https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css");
 
 html,body{
-    background: $bg;
+  background: url('../../static/bg.jpg') $bg 100% 100%;
+  background-attachment: fixed;
+  background-size: cover;
 }
 
 #app {
