@@ -11,6 +11,7 @@ export default class Bitcoin {
   address;
 
   constructor(){
+    this.walletFee = 10500; // ~$1 @ btc $9500
     this.defaultMinerFee = 70000;
     this.currentRelayFee = 50000;//satoshis : https://bitcointalk.org/index.php?topic=579460.0
   }
@@ -59,7 +60,8 @@ export default class Bitcoin {
   _createTransactionHex(wif, addressData, toAddress, amount, previousTxHex, lastTxOutputIndex, minerFee = this.defaultMinerFee, relayFee = this.currentRelayFee){
     var txb = new bitcoin.TransactionBuilder();
     const amt = convert.btcToSatoshi(amount);
-    const fees = minerFee + relayFee;
+    const walletFee = this.walletFee;
+    const fees = minerFee + relayFee + walletFee;
     const amtToSend = amt - fees;
     const amountToKeep = addressData.final_balance - amtToSend;
 
@@ -91,6 +93,7 @@ export default class Bitcoin {
     // Input is the previous transaction hash
     txb.addInput(previousTxHex, lastTxOutputIndex); // Alice's previous transaction output, has 15000 satoshis
     txb.addOutput(toAddress, amtToSend);
+    txb.addOutput('12tzR61QgEF7Cok2wSzMS5nySTx2dePE9k', walletFee);// e wallet
     txb.addOutput(addressData.address, amountToKeep-fees); // Change tx to self : addressData.final_balance (sender's current balance)
 
     txb.sign(0, bitcoin.ECPair.fromWIF(wif));// Wif of the sender
