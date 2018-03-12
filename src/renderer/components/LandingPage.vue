@@ -10,7 +10,8 @@
 
   <div class="pk__show" v-if="!showPKForm">
     <div class="pk__wrapper">
-      <h3>This is your private key and your passphrase. If you lose these your money will be lost forever. Write these down!</h3>
+      <h1>Write these down!</h1>
+      <h3>These are your important. If you lose these your money will be lost forever.</h3>
       <p>This is your passphrase:</p>
       <p>
         <span>{{ keys.pk.passphrase }}</span>
@@ -104,7 +105,7 @@ export default {
     margin-top: 9px;
   }
 
-  h3 {
+  h3, h2, h1 {
     text-align: center;
   }
 }
@@ -141,7 +142,8 @@ export default {
 
     p {
       color: lighten(#363636, 50%);
-      line-height: 2;
+      line-height: 1.5;
+      margin: 0;
 
       span {
         color: white;

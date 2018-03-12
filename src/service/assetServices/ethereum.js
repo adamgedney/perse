@@ -7,7 +7,7 @@ import bitcoin from 'bitcoinjs-lib';
 // import using testnet 3 network
 // var pushtx = require('blockchain.info/pushtx').usingNetwork(3)
 
-export default class Bitcoin {
+export default class Ethereum {
   address;
 
   constructor(){
@@ -32,10 +32,10 @@ export default class Bitcoin {
           const key = Object.keys(address)[0];
           const data = { ...address[key] };
 
-          return Promise.resolve({
+          return Promise.resolve({ 
             address: key,
-            ...data,
-            final_balance_btc: convert.satoshiToBtc(data.final_balance)
+            ...data, 
+            balance: convert.satoshiToBtc(data.final_balance)
           });
         })
     );

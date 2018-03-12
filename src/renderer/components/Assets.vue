@@ -9,8 +9,8 @@
         <router-link :to="{ name: 'asset', params: { id: asset.id }}">
           <img :src="`static/assetLogos/${asset.symbol.toLowerCase()}.png`" :alt="asset.symbol" />
           <div class="assetsList__values">
-            <p>{{asset.addressData.current_price_usd}}</p>
-            <p>{{asset.addressData.final_balance_btc}}</p>
+            <p>{{asset.addressData.current_price_usd || '$0'}}</p>
+            <p>{{asset.addressData.balance || '0.00'}}</p>
           </div>
         </router-link>
       </li> 

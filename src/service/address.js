@@ -1,7 +1,7 @@
 import PrivateKeyService from './privateKey';
 import AssetService from './assets';
-import BitcoinService from './assets/bitcoin';
-import EthereumService from './assets/ethereum';
+import BitcoinService from './assetServices/bitcoin';
+import EthereumService from './assetServices/ethereum';
 import walletAddressValidator from 'wallet-address-validator';
 
 export default class Address {
