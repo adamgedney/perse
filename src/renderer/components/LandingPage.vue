@@ -67,19 +67,22 @@ export default {
         alert("Copied!");
       },
       generateKeys() {
-        const genKeys = {
+        let genKeys = {
           pk: addressService.makePrivateKeyFromPhrase(this.keys.pk.passphrase),
-          btc: addressService.makePublicAddress()
+          
         };
 
-        this.updateKeys(genKeys);
+        addressService.makePublicAddresses()
+        .subscribe(assets =>{
+          genKeys = Object.assign({},{pk:genKeys.pk}, {...assets});
+          this.updateKeys(genKeys);
 
-        console.log("BTC Public Address: ", genKeys.btc);
-        console.log("Private Key:  ", genKeys.pk);
-        // console.log("Store:  ", this.keys.btc);
-
-        // Hide the passphrase form and show the results
-        this.togglePkForm();
+          console.log("BTC Public Address: ", genKeys.bitcoin);
+          console.log("Private Key:  ", genKeys.pk);
+    
+          // Hide the passphrase form and show the results
+          this.togglePkForm();
+        });        
       },
       updatePassphraseInStore(e) {
         this.updatePassphrase(e.target.value);

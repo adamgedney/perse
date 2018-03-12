@@ -1,8 +1,11 @@
+import { Observable } from "rxjs";
+import 'rxjs/add/observable/of';
+
 import PrivateKeyService from './privateKey';
 import AssetService from './assets';
-import BitcoinService from './assetServices/bitcoin';
-import EthereumService from './assetServices/ethereum';
 import walletAddressValidator from 'wallet-address-validator';
+import _ from 'underscore';
+import assetServices from './assetServices';
 
 export default class Address {
   instance;
@@ -13,16 +16,12 @@ export default class Address {
   /** public keys & addresses for the supported assets */
   assets = {};
 
-  supportedAssets;
   privateKeyService;
-  bitcoinService;
-  ethereumService;
 
   constructor() {
-    this.supportedAssets = new AssetService().getSupportedAssets();
+    this.assetService = new AssetService();
     this.privateKeyService = new PrivateKeyService();
-    this.bitcoinService = new BitcoinService();
-    this.ethereumService = new EthereumService();
+    this.assetServices = _.mapObject(assetServices, (CurrentService,key) => new CurrentService());
 
     // Singleton
     if (!this.instance) { this.instance = this; }
@@ -36,21 +35,29 @@ export default class Address {
     return this.privateKey;
   }
 
-  makePublicAddress(assetSymbol = "bitcoin") {
-    // if (assetSymbol) {
-    this.assets[assetSymbol] = this[`${assetSymbol}Service`]
-      ? this[`${assetSymbol}Service`].makeKeys(this.privateKey.hex)
-      : false;
+  // makePublicAddress(assetSymbol = "bitcoin") {
+  //   this.assets[assetSymbol] = this[`${assetSymbol}Service`]
+  //     ? this[`${assetSymbol}Service`].makeKeys(this.privateKey.hex)
+  //     : false;
 
-    return this.assets[assetSymbol];
-    // } else {
-    //   return this.assets = this.supportedAssets.reduce((curr, acc) => {
-    //     console.log('SA', curr, acc);
-    //     return this[`${assetSymbol}Service`]
-    //       ? acc[assetSymbol] = this[`${assetSymbol}Service`].makeKeys(this.privateKey.privateKeyHex)
-    //       : acc;
-    //   }, {});
-    // }
+  //   return this.assets[assetSymbol];
+  // }
+
+  makePublicAddresses() {
+    return this.assetService 
+      .getAssetsList()
+      .map(assets => 
+        this.assets = assets
+          .reduce((acc, curr) =>  { 
+            return Object.assign({},acc,
+              {
+                [curr.id]:this.assetServices[`${curr.id}Service`]
+              ? this.assetServices[`${curr.id}Service`].makeKeys(this.privateKey.hex)
+              : false
+              }
+            )
+          },{})
+      );
   }
 
   getPrivateKey = () => this.privateKey

@@ -6,13 +6,13 @@
 
     <ul class="assetsList">
       <li v-for="asset in assets">
-        <router-link :to="{ name: 'asset', params: { id: asset.id }}">
+        <!-- <router-link :to="{ name: 'asset', params: { id: asset.id }}">
           <img :src="`static/assetLogos/${asset.symbol.toLowerCase()}.png`" :alt="asset.symbol" />
           <div class="assetsList__values">
             <p>{{asset.addressData.current_price_usd || '$0'}}</p>
             <p>{{asset.addressData.balance || '0.00'}}</p>
           </div>
-        </router-link>
+        </router-link> -->
       </li> 
     </ul>
 </div>
