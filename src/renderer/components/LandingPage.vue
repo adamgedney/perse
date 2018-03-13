@@ -57,7 +57,7 @@ export default {
   }),
   methods: Object.assign(
     {},
-    mapActions(["updateKeys", "togglePkForm", "updatePassphrase"]),
+    mapActions(["updateKeys","updateKey", "togglePkForm", "updatePassphrase"]),
     {
       copyToClipboard(text) {
         copy(text, {
@@ -67,22 +67,19 @@ export default {
         alert("Copied!");
       },
       generateKeys() {
-        let genKeys = {
-          pk: addressService.makePrivateKeyFromPhrase(this.keys.pk.passphrase),
-          
-        };
+        const pk = addressService.makePrivateKeyFromPhrase(this.keys.pk.passphrase);
+        this.updateKey({id:'pk',...pk});
 
         addressService.makePublicAddresses()
-        .subscribe(assets =>{
-          genKeys = Object.assign({},{pk:genKeys.pk}, {...assets});
-          this.updateKeys(genKeys);
+          .subscribe(assetKey =>{
+            this.updateKey(assetKey);
 
-          console.log("BTC Public Address: ", genKeys.bitcoin);
-          console.log("Private Key:  ", genKeys.pk);
-    
+            // console.log("Public Address: ", genKeys);
+            console.log("Private Key:  ", this.keys);
+          }); 
+          
           // Hide the passphrase form and show the results
-          this.togglePkForm();
-        });        
+            this.togglePkForm();
       },
       updatePassphraseInStore(e) {
         this.updatePassphrase(e.target.value);

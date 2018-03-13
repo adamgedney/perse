@@ -21,29 +21,12 @@ export default class Wallet {
     this.assetServices = _.mapObject(assetServices, (CurrentService,key) => new CurrentService());
   }
 
-  // getWalletAssets = (keys) => {
-  //   return assetsService.getAssetsList()
-  //     .withLatestFrom(bitcoinService.getAddressBalance(keys), (assetList,addressBalanceData) => {
-  //       return assetList.map(asset => {
-  
-  //         // @todo make this dynamic once we have another asset balance stream
-  //         if (asset.id === 'bitcoin') {
-  //           addressBalanceData['current_price_usd'] = convert.toCurrentUSDFromAssetBalance(addressBalanceData.balance, asset);
-  //           asset['addressData'] = addressBalanceData;
-  //         }else{
-  //           asset['addressData'] = {};
-  //         }
-
-  //         return asset;
-  //       });
-  //   });
-  // }
-
   getWalletAssets = (keys) => {
     return assetsService.getAssetsList()
       .flatMap(asset => {
         return this.assetServices[`${asset.id}Service`].getAddressBalance(keys)
           .map(addressBalanceData => {
+            
             if(addressBalanceData){
               addressBalanceData['current_price_usd'] = convert.toCurrentUSDFromAssetBalance(addressBalanceData.balance, asset);
             }

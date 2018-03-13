@@ -7,6 +7,9 @@ const mutations = {
   UPDATE_KEYS(state, keys) {
     state.keys = keys;
   },
+  UPDATE_KEY(state, key) {
+    state.keys[key.id] = key;
+  },
   TOGGLE_PK_FORM(state, val) {
     state.showPKForm = !state.showPKForm;
   },
@@ -18,6 +21,9 @@ const mutations = {
 const actions = {
   updateKeys({ commit }, keys) {
     commit('UPDATE_KEYS', keys)
+  },
+  updateKey({ commit }, key) {
+    commit('UPDATE_KEY', key)
   },
   togglePkForm({ commit }) {
     commit('TOGGLE_PK_FORM')

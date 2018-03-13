@@ -41,7 +41,7 @@ export default {
     walletService
       .getWalletAssets(this.$store.getters.keys)
       .subscribe(asset => {
-        console.log('ASSET', asset)
+        console.log('Assets.js', asset, this.$store.getters.keys)
         this.updateAsset(asset);
       });
   }

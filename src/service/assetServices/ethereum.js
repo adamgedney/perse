@@ -13,16 +13,18 @@ export default class Ethereum {
   }
 
   makeKeys(privateKeyHex) {
-    return this.address = ethereum.fromPrivateKey(
+    this.address = new ethereum.fromPrivateKey(
       new Buffer(privateKeyHex, 'hex')
-    ).publicAddress;
+    ).getPublicKey();
+console.log('ethereum makeKeys',this.address);
+    return this.address || {}
   }
 
   getAddress = () => this.address
 
   getAddressBalance = (keys) => {
     // return Observable.fromPromise(
-    //   blockexplorer.getBalance(keys.btc)
+    //   blockexplorer.getBalance(keys.ethereum)
     //     .then(address => {
     //       const key = Object.keys(address)[0];
     //       const data = { ...address[key] };

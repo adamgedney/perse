@@ -15,9 +15,9 @@ export default class Assets {
 
   getAssetsList = () => Observable
     .from(this.supportedAssets)
-    .concatMap(asset => 
-      Observable.fromPromise(coinmarketcap.tickerByAsset(asset))
-    )
+    .concatMap(asset => {// concat map operator waits for inner observable to complete, then returns the mutated data up
+      return Observable.fromPromise(coinmarketcap.tickerByAsset(asset))
+    })
       
 
   getAssetById = (assetId) => Observable
