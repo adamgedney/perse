@@ -6,13 +6,13 @@
 
     <ul class="assetsList">
       <li v-for="asset in assets">
-        <!-- <router-link :to="{ name: 'asset', params: { id: asset.id }}">
+        <router-link :to="{ name: 'asset', params: { id: asset.id }}">
           <img :src="`static/assetLogos/${asset.symbol.toLowerCase()}.png`" :alt="asset.symbol" />
           <div class="assetsList__values">
             <p>{{asset.addressData.current_price_usd || '$0'}}</p>
             <p>{{asset.addressData.balance || '0.00'}}</p>
           </div>
-        </router-link> -->
+        </router-link>
       </li> 
     </ul>
 </div>
@@ -34,19 +34,15 @@ export default {
     assets: "assets",
     assetById: "assetById"
   }),
-  methods: Object.assign({}, mapActions(["updateAssets"]), {
-    // routeToHome() {
-    //   this.$router.push("landing-page");
-    // }
+  methods: Object.assign({}, mapActions(["updateAssets","updateAsset"]), {
   }),
   created: function() {
     // Get the generated pub/priv keys from the store to do a wallet lookup for the addresses
     walletService
       .getWalletAssets(this.$store.getters.keys)
-      .subscribe(assets => {
-        this.updateAssets(assets);
-
-        console.log("Wallet Assets", assets);
+      .subscribe(asset => {
+        console.log('ASSET', asset)
+        this.updateAsset(asset);
       });
   }
 };

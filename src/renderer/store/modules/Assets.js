@@ -3,11 +3,13 @@ const state = {
 }
 
 const mutations = {
-  UPDATE_ASSETS(state, assets) {
-    state.assets = assets;
+  UPDATE_ASSETS(state, asset) {
+    state.assets = asset;
   },
   UPDATE_ASSET(state, asset) {
-    state.assets = state.assets.map(a => a.id === asset.id ? asset : a);
+    const assets = state.asset || [];
+
+    state.assets = assets.length === 0 ? [asset] : assets.map(a => a.id === asset.id ? asset : a);
   }
 }
 

@@ -1,6 +1,9 @@
 import { Observable, Subject } from "rxjs";
+import 'rxjs/add/observable/from';
+
 import Rx from "rxjs";
 import { interval } from 'rxjs/observable/interval';
+
 import Promise from 'bluebird';
 const coinmarketcap = require("coinmarketcap");
 
@@ -11,12 +14,11 @@ export default class Assets {
   }
 
   getAssetsList = () => Observable
-    .fromPromise(
-      Promise.all(
-        this.supportedAssets 
-          .map(asset => coinmarketcap.tickerByAsset(asset)
-          )
-      ))
+    .from(this.supportedAssets)
+    .concatMap(asset => 
+      Observable.fromPromise(coinmarketcap.tickerByAsset(asset))
+    )
+      
 
   getAssetById = (assetId) => Observable
     .fromPromise(
