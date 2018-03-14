@@ -34,8 +34,8 @@ export default class Wallet {
           .map(addressBalanceData => {
             
             if(addressBalanceData){
-              asset['addressData'] = addressBalanceData;
               addressBalanceData['current_price_usd'] = convert.toCurrentUSDFromAssetBalance(addressBalanceData.balance, asset);
+              asset['addressData'] = addressBalanceData;
             }
 
             return asset;

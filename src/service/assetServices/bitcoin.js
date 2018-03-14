@@ -111,12 +111,12 @@ export default class Bitcoin {
   // )
 
   // Public api for creating and sending a bitcoin tx
-  sendTx = (wif,addressData, toAddress, amount) => 
+  sendTx = (keys,addressData, toAddress, amount) => 
     this.getAddressTxs(addressData.address, 1)
       .map(txData => 
         this._sendTxHex(
           this._createTransactionHex(
-            wif,
+            keys.pk.wif,
             addressData, 
             toAddress, 
             amount,

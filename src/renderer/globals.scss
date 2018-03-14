@@ -2,6 +2,7 @@ $bg: #000;//#333
 $bg-secondary: rgba($bg, 0.85);
 
 $bg-alt: rgba($bg,0.5);
+$bg-alt-secondary: lighten($bg,0.5);
 
 $sidebar-width: 57px;
 
@@ -9,4 +10,4 @@ $text-primary: lighten($bg, 16.5%);
 $text-secondary: lighten($bg, 49.5%);
 $text-tertiary: #fff;
 
-$border: $bg-alt;
+$border: rgba(#fff,0.3);

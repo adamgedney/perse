@@ -10,8 +10,8 @@
           <p>${{asset.price_usd}}</p>
         </div>
         <div>
-          <p>{{asset.addressData.final_balance_btc}} {{asset.symbol.toLowerCase()}}</p>
-          <h2>{{asset.addressData.current_price_usd}}</h2>
+          <p>{{asset.addressData.balance || "0.00"}} {{asset.symbol.toLowerCase()}}</p>
+          <h2>{{asset.addressData.current_price_usd || '$0'}}</h2>
         </div>
       </div>
       <div class="asset__headerRow">
@@ -48,8 +48,9 @@ export default {
     return {
       assetId: this.$route.params.id,
       asset: this.$store.getters.assetById(this.$route.params.id),
-      recipientAddress: "12tzR61QgEF7Cok2wSzMS5nySTx2dePE9k",//exodus wallet
-      sendAmount: 0.0013
+      recipientAddress: "0xa036Ea890A1A248dcf601a62561bD04E3CfDB975",//exodus wallet ETH
+      // recipientAddress: "12tzR61QgEF7Cok2wSzMS5nySTx2dePE9k",//exodus wallet BTC
+      sendAmount: 0.00001
     };
   },
   methods: Object.assign({},mapActions(["updateAsset"]),{
@@ -68,7 +69,7 @@ export default {
         // alert(`Send ${this.sendAmount}${this.asset.symbol.toLowerCase()} to ${this.recipientAddress}?`);
 
         addressService.sendTx(
-          this.$store.getters.keys.pk.wif,
+          this.$store.getters.keys,
           this.asset.addressData,
           this.recipientAddress,
           this.sendAmount, 
@@ -183,6 +184,10 @@ export default {
 
   input {
     margin-bottom: 9px;
+  }
+
+  .el-input{
+    // border: 1px solid $border !important;
   }
 }
 </style>

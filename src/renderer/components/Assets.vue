@@ -5,7 +5,7 @@
   </router-link>
 
     <ul class="assetsList">
-      <li v-for="asset in assets">
+      <li v-for="asset in assets" :title="asset.name">
         <router-link :to="{ name: 'asset', params: { id: asset.id }}">
           <img :src="`static/assetLogos/${asset.symbol.toLowerCase()}.png`" :alt="asset.symbol" />
           <div class="assetsList__values">
@@ -55,6 +55,7 @@ export default {
   padding-top: 36px;
   display: flex;
   justify-content: center;
+  flex-wrap: wrap;
 
   li {
     padding: 18px;
@@ -82,6 +83,8 @@ export default {
     }
 
     &:hover {
+      opacity: 0.7;
+
       & .assetsList__values :nth-child(1) {
         display: none;
       }

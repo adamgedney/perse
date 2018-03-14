@@ -10,7 +10,7 @@ const coinmarketcap = require("coinmarketcap");
 export default class Assets {
   constructor() {
     // this.supportedAssets = ['bitcoin', 'ethereum'];
-    this.supportedAssets = ['bitcoin', 'ethereum', 'ripple','litecoin','tron'];
+    this.supportedAssets = ['bitcoin', 'ethereum', 'ripple','litecoin','tron', 'bitcoin-cash', 'stellar','cardano','eos','nem','nucleus-vision'];
     // this.supportedAssets = ['bitcoin'];
   }
 
