@@ -8,11 +8,7 @@ const mutations = {
     state.assets = asset;
   },
   UPDATE_ASSET(state, asset) {
-
-console.log(state.assets,state.assets.length, asset, asset.id);
-    if(state.assets.length === 0){
-      state.assets = [asset];
-    }else if(!!_.findWhere(state.assets,{id:asset.id})){
+    if(!!_.findWhere(state.assets,{id:asset.id})){
       state.assets = state.assets
         .map(a => a.id === asset.id ? asset : a);
     }else{

@@ -24,14 +24,19 @@ export default class Wallet {
   getWalletAssets = (keys) => {
     return assetsService.getAssetsList()
       .flatMap(asset => {
+        asset['addressData'] = {};
+
+        if(!this.assetServices[`${asset.id}Service`]){ 
+          return Observable.of(asset);
+        }
+
         return this.assetServices[`${asset.id}Service`].getAddressBalance(keys)
           .map(addressBalanceData => {
             
             if(addressBalanceData){
+              asset['addressData'] = addressBalanceData;
               addressBalanceData['current_price_usd'] = convert.toCurrentUSDFromAssetBalance(addressBalanceData.balance, asset);
             }
-
-            asset['addressData'] = addressBalanceData;
 
             return asset;
           })
