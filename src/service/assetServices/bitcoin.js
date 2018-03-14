@@ -27,7 +27,7 @@ export default class Bitcoin {
 
   getAddressBalance = (keys) => {
     return Observable.fromPromise(
-      blockexplorer.getBalance(keys.bitcoin)
+      blockexplorer.getBalance(keys.bitcoin.address)
         .then(address => {
           const key = Object.keys(address)[0];
           const data = { ...address[key] };

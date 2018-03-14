@@ -10,13 +10,13 @@
           <p>${{asset.price_usd}}</p>
         </div>
         <div>
-          <p>{{asset.addressData.final_balance_btc}} btc</p>
+          <p>{{asset.addressData.final_balance_btc}} {{asset.symbol.toLowerCase()}}</p>
           <h2>{{asset.addressData.current_price_usd}}</h2>
         </div>
       </div>
       <div class="asset__headerRow">
-        <h3>Your Bitcoin public wallet address</h3>
-        <h4>(Use this address to receive btc from senders)</h4>
+        <h3>Your {{asset.name}} public wallet address</h3>
+        <h4>(Use this address to receive {{asset.symbol.toLowerCase()}} from senders)</h4>
         <p>{{asset.addressData.address}}
           <span title="Copy to clipboard" class="copyButton" v-on:click="copyToClipboard(asset.addressData.address)"></span>
         </p>

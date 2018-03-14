@@ -11,7 +11,7 @@
   <div class="pk__show" v-if="!showPKForm">
     <div class="pk__wrapper">
       <h1>Write these down!</h1>
-      <h3>These are your important. If you lose these your money will be lost forever.</h3>
+      <h3>These keys are important. If you lose these your money will be lost forever.</h3>
       <p>This is your passphrase:</p>
       <p>
         <span>{{ keys.pk.passphrase }}</span>

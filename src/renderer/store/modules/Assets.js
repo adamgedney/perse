@@ -1,3 +1,4 @@
+import _ from 'underscore';
 const state = {
   assets: []
 }
@@ -7,9 +8,18 @@ const mutations = {
     state.assets = asset;
   },
   UPDATE_ASSET(state, asset) {
-    const assets = state.asset || [];
 
-    state.assets = assets.length === 0 ? [asset] : assets.map(a => a.id === asset.id ? asset : a);
+console.log(state.assets,state.assets.length, asset, asset.id);
+    if(state.assets.length === 0){
+      state.assets = [asset];
+    }else if(!!_.findWhere(state.assets,{id:asset.id})){
+      state.assets = state.assets
+        .map(a => a.id === asset.id ? asset : a);
+    }else{
+      state.assets.push(asset);
+    }
+
+    state.assets.sort((a, b) => a.rank - b.rank);
   }
 }
 

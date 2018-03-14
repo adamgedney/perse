@@ -1,7 +1,8 @@
 import { Observable } from "rxjs";
 import { convert } from '../../utils';
 import ethereum from 'ethereumjs-wallet';
-
+import { INFURA_MAIN_NETWORK_URL } from '../../utils/constants';
+import Web3 from 'web3';
 
 export default class Ethereum {
   address;
@@ -10,32 +11,38 @@ export default class Ethereum {
     this.walletFee = 10500; // ~$1 @ btc $9500
     this.defaultMinerFee = 70000;
     this.currentRelayFee = 50000;//satoshis : https://bitcointalk.org/index.php?topic=579460.0
+    this.web3;
+
+    if (typeof this.web3 !== 'undefined') {
+      this.web3 = new Web3(this.web3.currentProvider);
+    } else {
+      // set the provider you want from Web3.providers
+      this.web3 = new Web3(new Web3.providers.HttpProvider(INFURA_MAIN_NETWORK_URL));
+    }
   }
 
   makeKeys(privateKeyHex) {
-    this.address = new ethereum.fromPrivateKey(
+    const ethAddresses = new ethereum.fromPrivateKey(
       new Buffer(privateKeyHex, 'hex')
-    ).getPublicKey();
-console.log('ethereum makeKeys',this.address);
-    return this.address || {}
+    );
+    return this.address = ethAddresses.getAddressString();
   }
 
   getAddress = () => this.address
+  isValidAddress = address => this.web3.isAddress(address)
 
   getAddressBalance = (keys) => {
-    // return Observable.fromPromise(
-    //   blockexplorer.getBalance(keys.ethereum)
-    //     .then(address => {
-    //       const key = Object.keys(address)[0];
-    //       const data = { ...address[key] };
-
-    //       return Promise.resolve({ 
-    //         address: key,
-    //         ...data, 
-    //         balance: convert.satoshiToBtc(data.final_balance)
-    //       });
-    //     })
-    // );
+    const self = this;
+    return Observable.of(
+      (function(){
+        const balance = self.web3.eth.getBalance(keys.ethereum.address).toNumber();
+        
+        return { 
+          address: keys.ethereum.address,
+          balance: self.web3.fromWei(balance, "ether" )
+        };
+      })()
+    );
   }
 
   // getAddressTxs = (address, limit) => 
