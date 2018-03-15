@@ -21,8 +21,8 @@ export default class Wallet {
     this.assetServices = _.mapObject(assetServices, (CurrentService,key) => new CurrentService());
   }
 
-  getWalletAssets = (keys) => {
-    return assetsService.getAssetsList()
+  getWalletAssets = (keys, assetId) => {
+    return assetsService.getAssetsList(assetId)
       .flatMap(asset => {
         asset['addressData'] = {};
 
@@ -43,21 +43,8 @@ export default class Wallet {
       })
   }
   
-  getWalletAssetById = (keys, assetId) => {
-    return assetsService.getAssetById(assetId)
-      .withLatestFrom(this.assetServices[`${assetId}Service`].getAddressBalance(keys), (asset,addressBalanceData) => {
-  
-          // @todo make this dynamic once we have another asset balance stream
-          if (asset.id === 'bitcoin') {
-            addressBalanceData['current_price_usd'] = convert.toCurrentUSDFromAssetBalance(addressBalanceData.balance, asset);
-            asset['addressData'] = addressBalanceData;
-          }else{
-            asset['addressData'] = {};
-          }
-
-          return asset;
-      });
-  }
+  getWalletAssetById = (keys, assetId) => 
+    this.getWalletAssets(keys,assetId);
 
   
 

@@ -76,8 +76,9 @@ export default {
           this.asset.id
         )
         .subscribe(
-          res => { 
-            console.log('SEND TX RES', res);
+          txId => { 
+            console.log('SEND TX RES', txId);
+            alert(`Successfully sent ${this.sendAmount} to ${this.recipientAddress}. Confirmation Tx ID: ${txId}`)
           }
         );
       }

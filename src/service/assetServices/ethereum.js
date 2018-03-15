@@ -68,10 +68,7 @@ export default class Ethereum {
    * https://github.com/trufflesuite/ganache-cli/issues/344
    */
   _createTransactionHex(keys, addressData, toAddress, amount){
-    const _gasPrice = this.web3.eth.gasPrice;
-
-    console.log(keys, addressData, toAddress, _gasPrice);
-
+    const _gasPrice = this.web3.eth.gasPrice;// ~.05 cents
     const tx = new EthereumTx(
       {
         nonce: this.web3.eth.getTransactionCount(keys.ethereum.address),
@@ -79,24 +76,18 @@ export default class Ethereum {
         gasLimit: this.web3.toHex(3000000),
         to: toAddress, 
         value: this.web3.toHex(this.web3.toWei(amount, "ether")), 
-        // data: '0x7f7465737432000000000000000000000000000000000000000000000000000000600057',
-        // EIP 155 chainId - mainnet: 1, ropsten: 3
         chainId: 1
       }
     );
 
     tx.sign(new Buffer(keys.pk.hex,'hex'));
-
     const serializedTx = tx.serialize();
-    const rawTx = '0x' + serializedTx.toString('hex');
 
-    return rawTx;
+    return '0x' + serializedTx.toString('hex');
   }
 
-  // _sendTxHex = transaction => Observable.fromPromise(pushtx.pushtx(transaction))
   _sendTxHex = transaction => Observable.fromPromise(
     new Promise((resolve,reject)=>{
-      // console.log('transaction',transaction, this.web3.eth.sendTransaction(transaction)); 
       resolve(this.web3.eth.sendRawTransaction(transaction));
     })
   )
@@ -106,5 +97,4 @@ export default class Ethereum {
     this._sendTxHex(
       this._createTransactionHex(keys, addressData, toAddress, amount)
     )
-  
 }
