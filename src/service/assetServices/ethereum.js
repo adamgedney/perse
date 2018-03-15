@@ -1,7 +1,7 @@
 import { Observable } from "rxjs";
 import { convert } from '../../utils';
 import ethereum from 'ethereumjs-wallet';
-// import EthereumTx from 'ethereumjs-tx';
+import EthereumTx from 'ethereumjs-tx';
 import { INFURA_MAIN_NETWORK_URL } from '../../utils/constants';
 import Web3 from 'web3';
 
@@ -62,42 +62,49 @@ export default class Ethereum {
   /**
    * https://medium.com/blockchain-musings/how-to-create-raw-transactions-in-ethereum-part-1-1df91abdba7c
    * https://github.com/ethereumjs/ethereumjs-tx
+   * https://tokenmarket.net/blog/creating-offline-ethereum-transactions-in-javascript/
+   * https://ethereum.stackexchange.com/questions/25839/how-to-make-transactions-using-private-key-in-web3
+   * https://medium.com/blockchain-education-network/use-ethereumjs-tx-and-web3-to-send-an-ether-transaction-using-your-terminal-45db2f76daaa
+   * https://github.com/trufflesuite/ganache-cli/issues/344
    */
   _createTransactionHex(keys, addressData, toAddress, amount){
-    const txCount = self.web3.eth.getTransactionCount(addressData.ethereum.address);
-    console.log(keys, addressData, toAddress, amount, txCount);
+    const _gasPrice = this.web3.eth.gasPrice;
 
-    // const tx = new EthereumTx(
-    //   {
-    //     nonce: '0x00',
-    //     gasPrice: '0x09184e72a000', 
-    //     gasLimit: '0x3000',
-    //     to: toAddress, 
-    //     value: '0x00', 
-    //     data: '0x7f7465737432000000000000000000000000000000000000000000000000000000600057',
-    //     // EIP 155 chainId - mainnet: 1, ropsten: 3
-    //     chainId: 1
-    //   }
-    // );
+    console.log(keys, addressData, toAddress, _gasPrice);
 
-    // tx.sign(privateKey);
+    const tx = new EthereumTx(
+      {
+        nonce: this.web3.eth.getTransactionCount(keys.ethereum.address),
+        gasPrice: this.web3.toHex(_gasPrice), 
+        gasLimit: this.web3.toHex(3000000),
+        to: toAddress, 
+        value: this.web3.toHex(this.web3.toWei(amount, "ether")), 
+        // data: '0x7f7465737432000000000000000000000000000000000000000000000000000000600057',
+        // EIP 155 chainId - mainnet: 1, ropsten: 3
+        chainId: 1
+      }
+    );
 
-    // const serializedTx = tx.serialize();
-    // const rawTx = '0x' + serializedTx.toString('hex');
+    tx.sign(new Buffer(keys.pk.hex,'hex'));
 
-    return '';
+    const serializedTx = tx.serialize();
+    const rawTx = '0x' + serializedTx.toString('hex');
+
+    return rawTx;
   }
 
   // _sendTxHex = transaction => Observable.fromPromise(pushtx.pushtx(transaction))
-  // _sendTxHex = transaction => Observable.fromPromise(
-  //   new Promise((resolve,reject)=>{
-  //     console.log('transaction',transaction); 
-  //     resolve({transaction});
-  //   })
-  // )
+  _sendTxHex = transaction => Observable.fromPromise(
+    new Promise((resolve,reject)=>{
+      // console.log('transaction',transaction, this.web3.eth.sendTransaction(transaction)); 
+      resolve(this.web3.eth.sendRawTransaction(transaction));
+    })
+  )
 
   // Public api for creating and sending a tx
   sendTx = (keys, addressData, toAddress, amount) => 
-    this._createTransactionHex(keys, addressData, toAddress, amount)
+    this._sendTxHex(
+      this._createTransactionHex(keys, addressData, toAddress, amount)
+    )
   
 }

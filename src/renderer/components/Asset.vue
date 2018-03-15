@@ -50,7 +50,7 @@ export default {
       asset: this.$store.getters.assetById(this.$route.params.id),
       recipientAddress: "0xa036Ea890A1A248dcf601a62561bD04E3CfDB975",//exodus wallet ETH
       // recipientAddress: "12tzR61QgEF7Cok2wSzMS5nySTx2dePE9k",//exodus wallet BTC
-      sendAmount: 0.00001
+      sendAmount: 0.00005//.03 in eth @~$600
     };
   },
   methods: Object.assign({},mapActions(["updateAsset"]),{

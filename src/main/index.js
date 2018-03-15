@@ -22,9 +22,9 @@ function createWindow() {
       // nodeIntegration: false,
       // preload: 'http://localhost'
     },
-    height: 563,
+    height: 750,
     useContentSize: true,
-    width: 1000
+    width: 1200
   })
 
   mainWindow.loadURL(winURL)

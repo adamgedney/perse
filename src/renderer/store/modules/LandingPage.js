@@ -1,5 +1,8 @@
 const state = {
-  keys: { pk: { passphrase: "reply jest will rest adjacent born update leave red window shoe" } },
+  keys: { pk: { 
+    passphrase: "reply jest will rest adjacent born update leave red window shoe",
+    password: '$alt' 
+  } },
   showPKForm: true
 }
 
@@ -15,6 +18,9 @@ const mutations = {
   },
   UPDATE_PASSPHRASE(state, passphrase) {
     state.keys.pk.passphrase = passphrase;
+  },
+  UPDATE_PASSWORD(state, password) {
+    state.keys.pk.password = password;
   }
 }
 
@@ -30,6 +36,9 @@ const actions = {
   },
   updatePassphrase({ commit }, passphrase) {
     commit('UPDATE_PASSPHRASE', passphrase)
+  },
+  updatePassword({ commit }, password) {
+    commit('UPDATE_PASSWORD', password)
   }
 }
 

@@ -30,8 +30,14 @@ export default class Address {
 
   getInstance = () => this.instance
 
-  makePrivateKeyFromPhrase(passphrase) {
-    return this.privateKey = this.privateKeyService.makePrivateKey(passphrase);
+  makePrivateKeyFromPhrase(passphrase, salt) {
+    let saltedPhrase = `${passphrase} ${salt}`;
+    
+    if(!salt || salt === '$alt'){// Excludes test acct
+      saltedPhrase = passphrase;
+    }
+
+    return this.privateKey = this.privateKeyService.makePrivateKey(saltedPhrase);
   }
 
   makePublicAddresses() {

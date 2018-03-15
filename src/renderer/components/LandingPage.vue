@@ -4,7 +4,8 @@
   
   <form class="pk__generate" v-if="showPKForm">
     <h3>Generate private keys from passphrase</h3>
-    <el-input type="text" placeholder="passphrase" :value="keys.pk.passphrase" @input="updatePassphraseInStore"></el-input>
+    <el-input type="text" placeholder="passphrase" v-model="keys.pk.passphrase"></el-input>
+    <el-input type="text" placeholder="password" v-model="keys.pk.password"></el-input>
     <el-button type="success" plain v-on:click="generateKeys">Generate Private Keys</el-button>
   </form>
 
@@ -57,7 +58,7 @@ export default {
   }),
   methods: Object.assign(
     {},
-    mapActions(["updateKeys","updateKey", "togglePkForm", "updatePassphrase"]),
+    mapActions(["updateKeys","updateKey", "togglePkForm", "updatePassphrase","updatePassword"]),
     {
       copyToClipboard(text) {
         copy(text, {
@@ -67,7 +68,7 @@ export default {
         alert("Copied!");
       },
       generateKeys() {
-        const pk = addressService.makePrivateKeyFromPhrase(this.keys.pk.passphrase);
+        const pk = addressService.makePrivateKeyFromPhrase(this.keys.pk.passphrase, this.keys.pk.password);
         this.updateKey({id:'pk',...pk});
 
         addressService.makePublicAddresses()
@@ -81,9 +82,12 @@ export default {
           // Hide the passphrase form and show the results
             this.togglePkForm();
       },
-      updatePassphraseInStore(e) {
-        this.updatePassphrase(e.target.value);
-      }
+      // updatePassphraseInStore(e) {
+      //   this.updatePassphrase(e.target.value);
+      // },
+      // updatePasswordInStore(e) {
+      //   this.updatePassword(e.target.value);
+      // }
     }
   ),
   created: function() {
@@ -116,7 +120,7 @@ export default {
     width: 66%;
     margin: 0 auto; 
 
-    input {
+    .el-input {
       display: block;
       border-radius: 0;
       margin-bottom: 9px;
