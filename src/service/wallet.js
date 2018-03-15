@@ -1,19 +1,13 @@
 import { Observable } from "rxjs";
 import 'rxjs/add/observable/of';
 import { mergeMap } from 'rxjs/operators';
-
-
 import Promise from 'bluebird';
 import { convert } from '../utils';
 import _ from 'underscore';
-
 import AssetsService from "./assets";
-const assetsService = new AssetsService();
-
-// import BitcoinService from "./assets/bitcoin";
-// import EthereumService from "./assets/ethereum";
-
 import assetServices from './assetServices';
+
+const assetsService = new AssetsService();
 
 export default class Wallet {
   constructor() {
