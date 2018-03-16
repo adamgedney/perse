@@ -6,7 +6,7 @@
     <h3>Generate private keys from passphrase</h3>
     <el-input type="text" placeholder="passphrase" v-model="keys.pk.passphrase"></el-input>
     <el-input type="text" placeholder="password" v-model="keys.pk.password"></el-input>
-    <el-button type="success" plain v-on:click="generateKeys">Generate Private Keys</el-button>
+    <el-button type="primary" plain v-on:click="generateKeys">Generate Private Keys</el-button>
   </form>
 
   <div class="pk__show" v-if="!showPKForm">
@@ -27,9 +27,9 @@
       </p>
     </div>
     <div class="pk__wrapper">
-    <el-checkbox v-model="copyCheck">Yes, I safely copied &amp; stored my 12 word Mneumonic and my private keys</el-checkbox>
+    <el-checkbox v-model="copyCheck">Yes, I safely copied &amp; stored my 12 word Mneumonic and my private keys &amp; I won't forget my password.</el-checkbox>
     <router-link :to="{ name: 'assets'}">
-      <el-button type="success" plain v-if="copyCheck" v-on:click="this.togglePkForm">
+      <el-button type="primary" plain v-if="copyCheck" v-on:click="this.togglePkForm">
         Take me to my wallets
       </el-button>
      </router-link>

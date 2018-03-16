@@ -60,7 +60,7 @@ export default {
   li {
     padding: 18px;
     width: 150px;
-    background: rgba($bg,0.7);
+    background: rgba($bg,0.4);
     border-radius: 3px;
     text-align: center;
     cursor: pointer;

@@ -27,7 +27,7 @@
         <h3>Send {{asset.symbol}}</h3>
         <el-input type="number" placeholder="Amount to send (in btc)" v-model="sendAmount"></el-input>
         <el-input type="text" placeholder="BTC send to address" v-model="recipientAddress"></el-input>
-        <el-button type="success" plain v-on:click="sendAsset">Send {{asset.name}}</el-button>
+        <el-button type="primary" plain v-on:click="sendAsset">Send {{asset.name}}</el-button>
       </form>
     </div>
   </div>
