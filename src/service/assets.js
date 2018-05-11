@@ -7,6 +7,15 @@ import { interval } from 'rxjs/observable/interval';
 import Promise from 'bluebird';
 const coinmarketcap = require("coinmarketcap");
 
+
+var NodeCoinMarketcap = require("node-coinmarketcap");
+ 
+var options = {
+    events: true, // Enable event system
+    refresh: 5 // Refresh time in seconds (Default: 60)
+}
+var nodeCoinMarketcap = new NodeCoinMarketcap(options);
+
 export default class Assets {
   constructor() {
     this.supportedAssets = ['bitcoin', 'ethereum','litecoin'];
@@ -22,15 +31,24 @@ export default class Assets {
     return Observable
       .from(this.supportedAssets)
       .concatMap(asset => {// concat map operator waits for inner observable to complete, then returns the mutated data up
-        return Observable.fromPromise(coinmarketcap.tickerByAsset(asset))
+        return Observable.fromPromise(
+          coinmarketcap.tickerByAsset(asset)
+        )
       })
   }
       
 
   getAssetById = (assetId) => Observable
-    .fromPromise(
+    .fromPromise(//.bindCallback
+        // nodeCoinMarketcap.on(assetId)
       coinmarketcap.tickerByAsset(assetId)
     )
+
+//     const hello = (message, callback) => callback(`Hello ${message}`);
+// const sayHello = Rx.Observable.bindCallback(hello);
+// const source = sayHello(`World`);
+
+// source.subscribe(result => console.log(result));
 
   // Get new data every n seconds and convert to stream
   // getAssetsList = () =>  {

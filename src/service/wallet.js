@@ -18,6 +18,10 @@ export default class Wallet {
   getWalletAssets = (keys, assetId) => {
     return assetsService.getAssetsList(assetId)
       .flatMap(asset => {
+        console.log(
+
+          'ASSET',asset
+        );
         asset['addressData'] = {};
 
         if(!this.assetServices[`${asset.id}Service`]){ 

@@ -49,11 +49,8 @@ export default class Litecoin {
     Observable.fromPromise(blockexplorer.getAddress(address, {limit}))
 
     /**
-     * https://medium.com/@orweinberger/how-to-create-a-raw-transaction-using-bitcoinjs-lib-1347a502a3a
-     * https://github.com/bitcoinjs/bitcoinjs-lib/blob/master/test/integration/transactions.js#L14
-     * https://medium.com/@gcwelborn/crafting-a-blockchain-transaction-with-javascript-3946bda1df7b
-     * Fees: https://bitcoin.stackexchange.com/questions/22068/how-do-i-find-out-the-miners-fee-for-my-transaction-using-blockchain-info-api
-     */
+     * 
+    */
   _createTransactionHex(wif, addressData, toAddress, amount, previousTxHex, lastTxOutputIndex, minerFee = this.defaultMinerFee, relayFee = this.currentRelayFee){
     var txb = new bitcoin.TransactionBuilder();
     const amt = convert.btcToSatoshi(amount);
