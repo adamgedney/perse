@@ -1,6 +1,6 @@
-import { INFURA_API_KEY } from './config';
+import { INFURA_API_KEY, mneumonic } from './config';
 
-export const MNEUMONIC = 'let sink depart run rust orb space helmet inject light down bass';
+export const MNEUMONIC = mneumonic;
 
 export const INFURA_MAIN_NETWORK_URL = `https://mainnet.infura.io/${INFURA_API_KEY}`; //Mainnet	production network	
 export const INFURA_ROPSTEN_NETWORK_URL = `https://ropsten.infura.io/${INFURA_API_KEY}` //Ropsten	test network	
